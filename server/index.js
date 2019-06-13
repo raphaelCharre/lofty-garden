@@ -1,9 +1,22 @@
 var arduino_conf = require('./conf/arduino.conf');
-var socket_io_conf = require('./conf/socket-io.conf');
+var server_conf = require('./conf/server.conf');
 
 var five = require("johnny-five");
-var board = new five.Board();
+var app = require('./api');
 
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+// Requetes
+io.sockets.on('connection', function (socket) {
+	// Message à la connexion
+  console.log('Connexion socket : Ok');
+});
+
+server.listen(server_conf.SOCKET_IO_PORT);
+
+//ARDUINO
+var board = new five.Board();
 var waterSensor;
 var fan;
 
@@ -25,7 +38,7 @@ function initWaterSensor(){
         freq: 1000/arduino_conf.DATA_EVENT_FREQUENCY
     })
     waterSensor.on('data', data=>{
-        console.log('Water sensor : ' + data);
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_WATER_SENSOR, data);
     })
     console.log("WATER SENSOR OK");
 }

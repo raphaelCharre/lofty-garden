@@ -1,11 +1,18 @@
 var express = require("express");
+var path = require('path');
 var app = express();
+
+app.use(express.static(__dirname + '/node_modules'));
 
 app.get("/", function(req, res) {
   // res.setHeader("Content-Type", "text/plain");
   // res.send("home");
   console.log("Navigating to /");
   res.json({ key: 1 });
+});
+
+app.get("/test", function(req, res) {
+  res.sendFile(path.join(__dirname + '/views/index.html'));
 });
 
 app.get("/temp", function(req, res) {
@@ -35,3 +42,5 @@ app.use(function(req, res, next) {
 });
 
 app.listen(8080);
+
+module.exports = app;
