@@ -1,8 +1,11 @@
+var arduino_conf = require('./conf/arduino.conf');
+var socket_io_conf = require('./conf/socket-io.conf');
+
 var VirtualSerialPort = require('udp-serial').SerialPort;
 var firmata = require('firmata');
 var five = require("johnny-five");
 var sp = new VirtualSerialPort({
-  host: '192.168.0.110' //make sure to change the ip(use 192.168.4.1 if you are using ESP8266 as Access Point)
+  host: arduino_conf.ip 
 });
 
 var io = new firmata.Board(sp);
