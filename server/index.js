@@ -1,23 +1,36 @@
 var arduino_conf = require('./conf/arduino.conf');
 var socket_io_conf = require('./conf/socket-io.conf');
 
-var VirtualSerialPort = require('udp-serial').SerialPort;
-var firmata = require('firmata');
 var five = require("johnny-five");
-var sp = new VirtualSerialPort({
-  host: arduino_conf.ip 
+var board = new five.Board();
+
+var waterSensor;
+var fan;
+
+board.on("ready", function() {
+    console.log("Board ready")
+    initComponents();
 });
 
-var io = new firmata.Board(sp);
-io.once('ready', function(){
-    console.log('IO Ready');
-    io.isReady = true;
+function initComponents(){
+    console.log("Initialize components...");
+    initWaterSensor();
+    initFan();
+    console.log("Initialization complete");
+}
 
-    var board = new five.Board({io: io, repl: true});
+function initWaterSensor(){
+    waterSensor = new five.Sensor.Digital({
+        pin: arduino_conf.WATER_SENSOR_PIN,
+        freq: 1000/arduino_conf.DATA_EVENT_FREQUENCY
+    })
+    waterSensor.on('data', data=>{
+        console.log('Water sensor : ' + data);
+    })
+    console.log("WATER SENSOR OK");
+}
 
-    board.on('ready', function(){
-        console.log('five ready');
-        var led = new five.Led(13);
-        led.blink();
-    });
-});
+function initFan(){
+    fan = new five.Pin(arduino_conf.FAN_PIN);
+    console.log("FAN OK");
+}
