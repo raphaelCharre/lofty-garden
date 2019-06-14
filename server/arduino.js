@@ -1,13 +1,13 @@
-var five = require("johnny-five");
-var arduino_conf = require('./conf/arduino.conf');
-var server_conf = require('./conf/server.conf');
-var io = require('./sockets');
+const five = require("johnny-five");
+const arduino_conf = require('./conf/arduino.conf');
+const server_conf = require('./conf/server.conf');
+const io = require('./sockets');
 
 
 const arduino = {};
-var board = new five.Board();
-var waterSensor;
-var fan;
+const board = new five.Board();
+const waterSensor;
+const fan;
 
 board.on("ready", function() {
     console.log("Board ready")

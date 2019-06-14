@@ -1,6 +1,7 @@
-var express = require("express");
-var path = require('path');
+const express = require("express");
+const path = require('path');
 const app = express();
+const server_conf = require('./conf/server.conf');
 
 app.use(express.static(__dirname + '/node_modules'));
 
@@ -41,6 +42,6 @@ app.use(function(req, res, next) {
   res.status(404).send("Page introuvable !");
 });
 
-app.listen(8080);
+app.listen(server_conf.APP_PORT);
 
 module.exports = app;
