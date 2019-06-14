@@ -6,6 +6,7 @@ module.exports = {
     WATER_SENSOR_PIN : 2,
 
     //OUTPUT
+    PUMP_PIN : 7,
     FAN_PIN : 8
 
 
