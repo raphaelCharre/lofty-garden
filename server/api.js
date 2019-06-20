@@ -2,6 +2,7 @@ const express = require("express");
 const path = require('path');
 const app = express();
 const server_conf = require('./conf/server.conf');
+const arduino = require('./arduino');
 
 app.use(express.static(__dirname + '/node_modules'));
 
@@ -13,6 +14,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/test", function(req, res) {
+  arduino.fan.setValue(arduino.fan.getValue() == 0 ? 1 : 0);
   res.sendFile(path.join(__dirname + '/views/index.html'));
 });
 

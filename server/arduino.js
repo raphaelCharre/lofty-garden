@@ -18,7 +18,13 @@ board.on("ready", function() {
 function initComponents(){
     console.log("Initialize components...");
     waterSensor.init();
+    waterSensor.onData = function(value){
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_WATER_SENSOR, value);
+    }
     fan.init();
+    fan.onChange = function(value){
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_FAN, value);
+    }
     console.log("Initialization complete");
 }
 
@@ -27,4 +33,6 @@ function demo(){
 }
 
 arduino.board = board;
+arduino.waterSensor = waterSensor;
+arduino.fan = fan;
 module.exports = arduino;
