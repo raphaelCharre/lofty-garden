@@ -2,7 +2,7 @@
   <div class="jumbotron">
     <div style="text-align:center">
       <h1>Welcome John Doe</h1>
-      <h2>Your number of greenhouse {{ nbr_serre }}</h2>
+      <h2>Your number of greenhouse {{ nbrSerre }}</h2>
     </div>
     <div class="text-center">
       <button class="btn btn-primary">add new</button>
@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<div class="container-fluid" *ngFor="let serre of obj_serre" style="margin-bottom: 25px;">
+<div class="container-fluid" *ngFor="let serre of objSerre" style="margin-bottom: 25px;">
   <div class="card">
     <img class="card-img-top"
       src="https://previews.123rf.com/images/mediagram/mediagram1507/mediagram150700004/42020068-la-croissance-industrielle-de-fraises-en-serre-n%C3%A9erlandais.jpg"
@@ -19,7 +19,7 @@
       <h5 class="card-title">{{ serre.title}}</h5>
       <p class="card-text">
           {{ serre.description }}<br>
-          {{ serre.plantation_date }}
+          {{ serre.plantationDate }}
       </p>
       <div class="text-center">
         <a href="#{{ serre.id }}" class="btn btn-primary">View more</a>
