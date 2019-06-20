@@ -17,46 +17,72 @@
                     var app = new Vue({
                         el: '#app',
                         data: {
-                            components:[
-                                fan = {
+                            components:{
+                                fan : {
                                     value: 0
                                 },
-                                pump = {
+                                pump : {
                                     value: 0
-                                },
-                                water_sensor = {
-                                    chart : {
-                                        id: 'water_sensor',
-                                        name: 'Water Sensor',
-                                        event: '0',
-                                        data: [],
-                                        labels: [],
-                                        graph: null,
-                                        scale: -10,
-                                        color: 'rgba(255, 167, 0, 1)',
-                                        bgColor: 'rgba(255, 167, 0, .1)'
-                                    }
-                                },
-                                light_sensor = {
-                                    chart : {
-                                        id: 'light_sensor',
-                                        name: 'Light sensor',
-                                        event: '1',
-                                        data: [],
-                                        labels: [],
-                                        graph: null,
-                                        scale: -10,
-                                        color: 'rgba(255, 167, 0, 1)',
-                                        bgColor: 'rgba(255, 167, 0, .1)'
-                                    }
+                                }
+                            },
+                            charts: [
+                                {
+                                    id: 'light_sensor',
+                                    name: 'Light sensor',
+                                    event: 'LIGHT',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(255, 167, 0, 1)',
+                                    bgColor: 'rgba(255, 167, 0, .1)'
+                                },{
+                                    id: 'water_sensor',
+                                    name: 'Water Sensor',
+                                    event: 'WATER',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(0, 158, 255, 1)',
+                                    bgColor: 'rgba(0, 158, 255, .1)'
+                                },{
+                                    id: 'moisture_sensor',
+                                    name: 'Moisture Sensor',
+                                    event: 'MOISTURE',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(64, 164, 151, 1)',
+                                    bgColor: 'rgba(64, 164, 151, .1)'
+                                },{
+                                    id: 'temp_sensor',
+                                    name: 'Temperature Sensor',
+                                    event: 'TEMP',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(222, 22, 14, 1)',
+                                    bgColor: 'rgba(222, 22, 14, .1)'
+                                },{
+                                    id: 'humidity_sensor',
+                                    name: 'Humidity Sensor',
+                                    event: 'HUMIDITY',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(125, 206, 232, 1)',
+                                    bgColor: 'rgba(125, 206, 232, .1)'
                                 }
                             ],
 
                             socket: null,
                         },
                         mounted(){
-                            var charts = [this.components.water_sensor.chart, this.components.light_sensor.chart];
-                            for(const chart of charts){
+                            for(const chart of this.charts){
                                 var chart_dom_element = document.getElementById(chart.id);
                                 var ctx = chart_dom_element.getContext('2d');
                                 chart.graph = new Chart(ctx, {
@@ -112,6 +138,12 @@
                         },
                         created(){
                             this.socket = io.connect('http://10.44.1.64:4201');
+                            this.socket.on('FAN', value=>{
+                                this.components.fan.value = value;
+                            });
+                            this.socket.on('PUMP', value=>{
+                                this.components.pump.value = value;
+                            });
                         },
                         methods:{
                         },
@@ -132,10 +164,21 @@
             <div id="app">
                     <div class="container-fluid">
                         <div class="row">
-                            <div v-for="chart in charts" :keys="chart.id" class="chart-container col-lg-6">
+                            <div v-for="chart in charts" :keys="chart.id" class="chart-container col-lg-4 col-md-6">
                                 <canvas style="height:400px" :id="chart.id"></canvas>
+                                <div class="form-group col-md-3">
+                                    <label :for="'scale-'+chart.id">Scale: </label>
+                                    <input class="form-control" type="number" v-model="chart.scale" :id="'scale-'+chart.id"/>
+                                </div>
+                                
                             </div>
+                        </div>
 
+                        <hr>
+
+                        <div class="row">
+                            <div class="col" id="fan-status">Fan status : {{components.fan.value? 'ON': 'OFF'}}</div>
+                            <div class="col" id="pump-status">Pump status : {{components.pump.value? 'ON': 'OFF'}}</div>
                         </div>
                     </div>
             </div>
