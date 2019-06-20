@@ -7,23 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IndexComponent implements OnInit {
 
-  constructor() { 
-    const nbrSerre = 3;
-    const objSerre = [
+  public nbrSerre;
+  public objSerre: any;
+
+  constructor() {
+    this.nbrSerre = 3;
+    this.objSerre = [
       {
         id: 0,
-        title: "fraise du bois de boulogne",
-        description: "fraise au gout de miel frère",
+        title: 'fraise du bois de boulogne',
+        description: 'fraise au gout de miel frère',
         plantationDate: new Date('December 17, 2019 03:24:00')
       }, {
         id: 1,
-        title: "vernifuge amérindien",
-        description: "plante gustative proposant la capacité de pimenter vos soirée",
+        title: 'vernifuge amérindien',
+        description: 'plante gustative proposant la capacité de pimenter vos soirée',
         plantationDate: new Date('December 17, 2018 03:24:00')
       }, {
         id: 2,
-        title: "choux shiva",
-        description: "espèce de choux descendant de la déesse shiva",
+        title: 'choux shiva',
+        description: 'espèce de choux descendant de la déesse shiva',
         plantationDate: new Date('December 17, 2017 03:24:00')
       }
     ];
