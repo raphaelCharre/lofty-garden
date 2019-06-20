@@ -29,7 +29,7 @@
                                 {
                                     id: 'light_sensor',
                                     name: 'Light sensor',
-                                    event: '1',
+                                    event: 'LIGHT',
                                     data: [],
                                     labels: [],
                                     graph: null,
@@ -39,13 +39,43 @@
                                 },{
                                     id: 'water_sensor',
                                     name: 'Water Sensor',
-                                    event: '0',
+                                    event: 'WATER',
                                     data: [],
                                     labels: [],
                                     graph: null,
                                     scale: -100,
-                                    color: 'rgba(255, 167, 0, 1)',
-                                    bgColor: 'rgba(255, 167, 0, .1)'
+                                    color: 'rgba(0, 158, 255, 1)',
+                                    bgColor: 'rgba(0, 158, 255, .1)'
+                                },{
+                                    id: 'moisture_sensor',
+                                    name: 'Moisture Sensor',
+                                    event: 'MOISTURE',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(64, 164, 151, 1)',
+                                    bgColor: 'rgba(64, 164, 151, .1)'
+                                },{
+                                    id: 'temp_sensor',
+                                    name: 'Temperature Sensor',
+                                    event: 'TEMP',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(222, 22, 14, 1)',
+                                    bgColor: 'rgba(222, 22, 14, .1)'
+                                },{
+                                    id: 'humidity_sensor',
+                                    name: 'Humidity Sensor',
+                                    event: 'HUMIDITY',
+                                    data: [],
+                                    labels: [],
+                                    graph: null,
+                                    scale: -100,
+                                    color: 'rgba(125, 206, 232, 1)',
+                                    bgColor: 'rgba(125, 206, 232, .1)'
                                 }
                             ],
 
@@ -108,10 +138,10 @@
                         },
                         created(){
                             this.socket = io.connect('http://10.44.1.64:4201');
-                            this.socket.on('2', value=>{
+                            this.socket.on('FAN', value=>{
                                 this.components.fan.value = value;
                             });
-                            this.socket.on('3', value=>{
+                            this.socket.on('PUMP', value=>{
                                 this.components.pump.value = value;
                             });
                         },
@@ -134,13 +164,21 @@
             <div id="app">
                     <div class="container-fluid">
                         <div class="row">
-                            <div v-for="chart in charts" :keys="chart.id" class="chart-container col-lg-6">
+                            <div v-for="chart in charts" :keys="chart.id" class="chart-container col-lg-4 col-md-6">
                                 <canvas style="height:400px" :id="chart.id"></canvas>
+                                <div class="form-group col-md-3">
+                                    <label :for="'scale-'+chart.id">Scale: </label>
+                                    <input class="form-control" type="number" v-model="chart.scale" :id="'scale-'+chart.id"/>
+                                </div>
+                                
                             </div>
                         </div>
+
+                        <hr>
+
                         <div class="row">
-                            <div class="col" id="fan-status">Fan status : {{components.fan.value}}</div>
-                            <div class="col" id="pump-status">Pump status : {{components.pump.value}}</div>
+                            <div class="col" id="fan-status">Fan status : {{components.fan.value? 'ON': 'OFF'}}</div>
+                            <div class="col" id="pump-status">Pump status : {{components.pump.value? 'ON': 'OFF'}}</div>
                         </div>
                     </div>
             </div>
