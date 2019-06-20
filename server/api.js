@@ -18,6 +18,11 @@ app.get("/test", function(req, res) {
   res.sendFile(path.join(__dirname + '/views/index.html'));
 });
 
+app.get("/fan/:value", function(req, res) {
+  arduino.fan.setValue(req.params.value > 0 ? 1:0);
+  res.sendStatus(200);
+});
+
 app.get("/temp", function(req, res) {
   // res.setHeader("Content-Type", "text/plain");
   // res.send("home");
@@ -45,5 +50,7 @@ app.use(function(req, res, next) {
 });
 
 app.listen(server_conf.APP_PORT);
+console.log('Server listening on : ' + 'http://localhost:'+server_conf.APP_PORT);
+console.log('Test url : ' + 'http://localhost:' + server_conf.APP_PORT + '/test');
 
 module.exports = app;
