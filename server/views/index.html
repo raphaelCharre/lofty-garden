@@ -110,7 +110,10 @@
                             this.socket = io.connect('http://10.44.1.64:4201');
                             this.socket.on('2', value=>{
                                 this.components.fan.value = value;
-                            })
+                            });
+                            this.socket.on('3', value=>{
+                                this.components.pump.value = value;
+                            });
                         },
                         methods:{
                         },
@@ -136,7 +139,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div id="fan-status">Fan status : {{components.fan.value}}</div>
+                            <div class="col" id="fan-status">Fan status : {{components.fan.value}}</div>
+                            <div class="col" id="pump-status">Pump status : {{components.pump.value}}</div>
                         </div>
                     </div>
             </div>

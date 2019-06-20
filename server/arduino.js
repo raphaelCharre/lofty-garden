@@ -8,6 +8,7 @@ const board = new five.Board();
 var waterSensor = require('./arduino_components/waterSensor');
 var lightSensor = require('./arduino_components/lightSensor');
 var fan = require('./arduino_components/fan');
+var pump = require('./arduino_components/pump');
 
 board.on("ready", function() {
     console.log("Board ready")
@@ -29,16 +30,22 @@ function initComponents(){
     }
     fan.init();
     fan.onChange = function(value){
-        io.sockets.emit(server_conf.SOCKET_IO_EVENT_FAN, value, new Date(), new Date().toLocaleTimeString());
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_FAN, value);
+    }
+
+    pump.init();
+    pump.onChange = function(value){
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_PUMP, value);
     }
     console.log("Initialization complete");
 }
 
 function demo(){
-
 }
 
 arduino.board = board;
 arduino.waterSensor = waterSensor;
+arduino.lightSensor = lightSensor;
 arduino.fan = fan;
+arduino.pump = pump;
 module.exports = arduino;

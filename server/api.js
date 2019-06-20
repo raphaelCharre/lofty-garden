@@ -14,12 +14,16 @@ app.get("/", function(req, res) {
 });
 
 app.get("/test", function(req, res) {
-  arduino.fan.setValue(arduino.fan.getValue() == 0 ? 1 : 0);
   res.sendFile(path.join(__dirname + '/views/index.html'));
 });
 
 app.get("/fan/:value", function(req, res) {
   arduino.fan.setValue(req.params.value > 0 ? 1:0);
+  res.sendStatus(200);
+});
+
+app.get("/pump/:value", function(req, res) {
+  arduino.pump.setValue(req.params.value > 0 ? 1:0);
   res.sendStatus(200);
 });
 
