@@ -19,11 +19,11 @@ function initComponents(){
     console.log("Initialize components...");
     waterSensor.init();
     waterSensor.onData = function(value){
-        io.sockets.emit(server_conf.SOCKET_IO_EVENT_WATER_SENSOR, value);
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_WATER_SENSOR, value, new Date().toLocaleTimeString());
     }
     fan.init();
     fan.onChange = function(value){
-        io.sockets.emit(server_conf.SOCKET_IO_EVENT_FAN, value);
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_FAN, value, new Date(), new Date().toLocaleTimeString());
     }
     console.log("Initialization complete");
 }

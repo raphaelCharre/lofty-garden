@@ -1,49 +1,144 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="/socket.io-client/dist/socket.io.js"></script>
-        <script src="/chart.js/dist/Chart.js"></script>
-        <script>
-        $(document).ready(function() {
-            $(function() {	
-                var app = new Vue({
-                    el: '#app',
-                    data: {
-                        socket: null,
-                    },
-                    mounted(){
-                        this.socket.on('0', value=>{
-                            console.log('Water sensor : ' + value);
-                        })
-                    },
-                    created(){
-                        this.socket = io.connect('http://localhost:4200');                    },
-                    methods:{
-                    },
-                })
-            });
-        })
-        </script>
+        <head>
+            <meta charset="utf-8" />
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+            
+            <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+            <script src="/socket.io-client/dist/socket.io.js"></script>
+            <script src="/chart.js/dist/Chart.js"></script>
+            <script>
+            $(document).ready(function() {
+                $(function() {	
+                    var app = new Vue({
+                        el: '#app',
+                        data: {
+                            components:[
+                                fan = {
+                                    value: 0
+                                },
+                                pump = {
+                                    value: 0
+                                },
+                                water_sensor = {
+                                    chart : {
+                                        id: 'water_sensor',
+                                        name: 'Water Sensor',
+                                        event: '0',
+                                        data: [],
+                                        labels: [],
+                                        graph: null,
+                                        scale: -10,
+                                        color: 'rgba(255, 167, 0, 1)',
+                                        bgColor: 'rgba(255, 167, 0, .1)'
+                                    }
+                                },
+                                light_sensor = {
+                                    chart : {
+                                        id: 'light_sensor',
+                                        name: 'Light sensor',
+                                        event: '1',
+                                        data: [],
+                                        labels: [],
+                                        graph: null,
+                                        scale: -10,
+                                        color: 'rgba(255, 167, 0, 1)',
+                                        bgColor: 'rgba(255, 167, 0, .1)'
+                                    }
+                                }
+                            ],
 
-        <style>
-        </style>
-    </head>
+                            socket: null,
+                        },
+                        mounted(){
+                            var charts = [this.components.water_sensor.chart, this.components.light_sensor.chart];
+                            for(const chart of charts){
+                                var chart_dom_element = document.getElementById(chart.id);
+                                var ctx = chart_dom_element.getContext('2d');
+                                chart.graph = new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                        labels: [],
+                                        datasets: []
+                                    },
+                                    options : {
+                                        animation : {
+                                            duration: 0
+                                        },
+                                        scales: {
+                                            xAxes: [{
+                                                gridLines: {
+                                                    color: '#555'
+                                                },
+                                                ticks :{
+                                                    fontColor: '#aaa',
+                                                    fontSize: 14
+                                                }
+                                            }],
+                                            yAxes: [{
+                                                gridLines: {
+                                                    color: '#555'
+                                                },
+                                                ticks: {
+                                                    fontColor: '#aaa',
+                                                    fontSize: 14
+                                                }
+                                            }]
+                                        }
 
-    <body>
-        <div id="app">
-            <div class="container-fluid">
-                <div class="row">
-                </div>
+                                    }
+                                });
+
+                                this.socket.on(chart.event, function(value, label){
+                                    chart.data.push(value);
+                                    chart.labels.push(label);
+
+                                    chart.graph.data.labels = chart.labels.slice(chart.scale);
+                                    chart.graph.data.datasets = [{
+                                        data : chart.data.slice(chart.scale),
+                                        borderColor: chart.color,
+                                        backgroundColor: chart.bgColor,
+                                        fill: true,
+                                        label: chart.name,
+                                        
+                                    }];
+                                    chart.graph.update();
+                                })
+                            }
+                        },
+                        created(){
+                            this.socket = io.connect('http://10.44.1.64:4201');
+                        },
+                        methods:{
+                        },
+                    })
+                });
+            })
+            </script>
+
+            <style>
+                html, body{
+                    background-color: #111;
+                    color: white;
+                }
+            </style>
+        </head>
+
+        <body>
+            <div id="app">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div v-for="chart in charts" :keys="chart.id" class="chart-container col-lg-6">
+                                <canvas style="height:400px" :id="chart.id"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
             </div>
-        </div>
-    </body>
+        </body>
  
 </html>

@@ -3,5 +3,6 @@ module.exports = {
     APP_PORT: 8080,
 
     SOCKET_IO_EVENT_WATER_SENSOR: '0',
-    SOCKET_IO_EVENT_FAN: '1'
+    SOCKET_IO_EVENT_LIGHT_SENSOR: '1',
+    SOCKET_IO_EVENT_FAN: '2'
 }
