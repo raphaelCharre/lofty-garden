@@ -1,27 +1,29 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="jumbotron col-s6">
+    <div class="jumbotron col-6">
       <div class="card">
-        <img src="" alt="" class="card-image">
+        <img
+          src="https://previews.123rf.com/images/mediagram/mediagram1507/mediagram150700004/42020068-la-croissance-industrielle-de-fraises-en-serre-n%C3%A9erlandais.jpg"
+          alt="" class="card-image" style="width: 100%;">
+        <span class="card-header">{{this.plante.title}}</span>
         <div class="card-body">
-          <p>this is a description</p>
+          <p>{{this.plante.description}}</p>
         </div>
-        <span class="card-header">titre de la plante</span>
       </div>
     </div>
-    <div class="jumbotron col-s6">
-      <p>vue de l'eau</p>
+    <div class="jumbotron col-6">
+      <h2>Vue de la température</h2>
+      <canvas #barChart>{{ chartTemp }}</canvas>
     </div>
   </div>
 </div>
-
-<div class="container-fluid">
-    <div class="row">
-      <div class="jumbotron col-s6">
-        <p>vue de la lumière</p>
-      </div>
-      <div class="jumbotron col-s6">
-        <p>vue de l'eau</p>
-      </div>
-    </div>
+<div class="row">
+  <div class="jumbotron col-6">
+    <h2>Graphique de lumière</h2>
+    <canvas #lineChart>{{ chartLumos }}</canvas>
   </div>
+  <div class="jumbotron col-6">
+    <h2>Graphique de l'eau</h2>
+    <canvas #zoulouChart>{{ chartWatter }}</canvas>
+  </div>
+</div>
