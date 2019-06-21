@@ -4,9 +4,9 @@ import { Chart } from "chart.js";
 import { io } from "socket.io-client";
 
 @Component({
-  selector: "app-detail",
-  templateUrl: "./detail.component.html",
-  styleUrls: ["./detail.component.css"]
+  selector: 'app-detail',
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.css']
 })
 export class DetailComponent implements OnInit {
   public objSerre: any;
@@ -84,33 +84,34 @@ private socket= null;
     this.objSerre = [
       {
         id: 0,
-        title: "fraise du bois de boulogne",
-        description: "fraise au gout de miel frère",
-        plantationDate: new Date("December 17, 2019 03:24:00")
+        title: 'fraise du bois de boulogne',
+        description: 'fraise au gout de miel frère',
+        plantationDate: new Date('December 17, 2019 03:24:00')
       },
       {
         id: 1,
-        title: "vernifuge amérindien",
+        title: 'vernifuge amérindien',
         description:
-          "plante gustative proposant la capacité de pimenter vos soirée",
-        plantationDate: new Date("December 17, 2018 03:24:00")
+          'plante gustative proposant la capacité de pimenter vos soirée',
+        plantationDate: new Date('December 17, 2018 03:24:00')
       },
       {
         id: 2,
-        title: "choux shiva",
-        description: "espèce de choux descendant de la déesse shiva",
-        plantationDate: new Date("December 17, 2017 03:24:00")
+        title: 'choux shiva',
+        description: 'espèce de choux descendant de la déesse shiva',
+        plantationDate: new Date('December 17, 2017 03:24:00')
       }
     ];
   }
 
   search = (nameKey, myArray) => {
-    for (var i = 0; i < myArray.length; i++) {
-      if (myArray[i].id == nameKey) {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < myArray.length; i++) {
+      if (myArray[i].id === nameKey) {
         return myArray[i];
       }
     }
-  };
+  }
 
   initSocket = ()=>{
     this.socket = io('http://localhost:4201');
@@ -179,7 +180,7 @@ private socket= null;
   }
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get("idSerre");
+    const id = this.route.snapshot.paramMap.get('idSerre');
     this.plante = this.search(id, this.objSerre);
     this.initSocket();
     this.initCharts();
