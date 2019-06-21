@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Chart } from "chart.js";
-import { io } from "socket.io-client";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Chart } from 'chart.js';
+import { io } from 'socket.io-client';
 
 @Component({
   selector: 'app-detail',
@@ -31,7 +31,7 @@ export class DetailComponent implements OnInit {
         scale: -100,
         color: 'rgba(255, 167, 0, 1)',
         bgColor: 'rgba(255, 167, 0, .1)'
-    },{
+    }, {
         id: 'water_sensor',
         name: 'Water Sensor',
         event: 'WATER',
@@ -41,7 +41,7 @@ export class DetailComponent implements OnInit {
         scale: -100,
         color: 'rgba(0, 158, 255, 1)',
         bgColor: 'rgba(0, 158, 255, .1)'
-    },{
+    }, {
         id: 'moisture_sensor',
         name: 'Moisture Sensor',
         event: 'MOISTURE',
@@ -51,7 +51,7 @@ export class DetailComponent implements OnInit {
         scale: -100,
         color: 'rgba(64, 164, 151, 1)',
         bgColor: 'rgba(64, 164, 151, .1)'
-    },{
+    }, {
         id: 'temp_sensor',
         name: 'Temperature Sensor',
         event: 'TEMP',
@@ -61,7 +61,7 @@ export class DetailComponent implements OnInit {
         scale: -100,
         color: 'rgba(222, 22, 14, 1)',
         bgColor: 'rgba(222, 22, 14, .1)'
-    },{
+    }, {
         id: 'humidity_sensor',
         name: 'Humidity Sensor',
         event: 'HUMIDITY',
@@ -74,11 +74,11 @@ export class DetailComponent implements OnInit {
     }
 ];
 
-private socket= null;
+private socket = null;
 
-  @ViewChild("barChart", {static: false}) private chartRef1;
-  @ViewChild("lineChart", {static: false}) private chartRef2;
-  @ViewChild("zoulouChart", {static: false}) private chartRef3;
+  @ViewChild('barChart', {static: false}) private chartRef1;
+  @ViewChild('lineChart', {static: false}) private chartRef2;
+  @ViewChild('zoulouChart', {static: false}) private chartRef3;
 
   constructor(private route: ActivatedRoute) {
     this.objSerre = [
@@ -113,20 +113,20 @@ private socket= null;
     }
   }
 
-  initSocket = ()=>{
+  initSocket = () => {
     this.socket = io('http://localhost:4201');
-    this.socket.on('FAN', value=>{
+    this.socket.on('FAN', value => {
       this.components.fan.value = value;
     });
-    this.socket.on('PUMP', value=>{
+    this.socket.on('PUMP', value => {
         this.components.pump.value = value;
     });
-  };
+  }
 
-  initCharts = ()=>{
-    for(const chart of this.charts){
-      var chart_dom_element = <HTMLCanvasElement> document.getElementById(chart.id);
-      var ctx = chart_dom_element.getContext('2d');
+  initCharts = () => {
+    for (const chart of this.charts) {
+      const chartDomElement = document.getElementById(chart.id) as HTMLCanvasElement;
+      const ctx = chartDomElement.getContext('2d');
       chart.graph = new Chart(ctx, {
           type: 'line',
           data: {
@@ -140,19 +140,19 @@ private socket= null;
               scales: {
                   xAxes: [{
                       gridLines: {
-                          //color: '#555'
+                          // color: '#555'
                       },
-                      ticks :{
-                          //fontColor: '#aaa',
+                      ticks : {
+                          // fontColor: '#aaa',
                           fontSize: 14
                       }
                   }],
                   yAxes: [{
                       gridLines: {
-                          //color: '#555'
+                          // color: '#555'
                       },
                       ticks: {
-                          //fontColor: '#aaa',
+                          // fontColor: '#aaa',
                           fontSize: 14
                       }
                   }]
@@ -161,7 +161,7 @@ private socket= null;
           }
       });
 
-      this.socket.on(chart.event, function(value, label){
+      this.socket.on(chart.event, (value, label) => {
           chart.data.push(value);
           chart.labels.push(label);
 
@@ -172,10 +172,9 @@ private socket= null;
               backgroundColor: chart.bgColor,
               fill: true,
               label: chart.name,
-              
           }];
           chart.graph.update();
-      })
+      });
     }
   }
 
