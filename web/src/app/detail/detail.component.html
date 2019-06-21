@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="jumbotron col-6">
+    <div class="jumbotron col-lg-6 col-md-12">
       <div class="card">
         <img
           src="https://previews.123rf.com/images/mediagram/mediagram1507/mediagram150700004/42020068-la-croissance-industrielle-de-fraises-en-serre-n%C3%A9erlandais.jpg"
@@ -11,24 +11,30 @@
         </div>
       </div>
     </div>
-    <div class="jumbotron col-6">
+    <div class="jumbotron col-lg-6 col-md-12">
       <h2>Vue de la température</h2>
-      <canvas barChart>{{ chartTemp }}</canvas>
+      <canvas #barChart>{{ chartTemp }}</canvas>
     </div>
   </div>
 </div>
 <div class="row">
-  <div class="jumbotron col-6">
+  <div class="jumbotron col-lg-6  col-md-12">
     <h2>Graphique de lumière</h2>
-    <canvas lineChart>{{ chartLumos }}</canvas>
+    <canvas #lineChart>{{ chartLumos }}</canvas>
   </div>
-  <div class="jumbotron col-6">
+  <div class="jumbotron col-lg-6  col-md-12">
     <h2>Graphique de l'eau</h2>
-    <canvas zoulouChart>{{ chartWatter }}</canvas>
+    <canvas #zoulouChart>{{ chartWatter }}</canvas>
   </div>
+</div>
 
-  <div *ngFor="let chart of charts" class="chart-container col-lg-4 col-md-6">
-    <canvas style="height:400px" [attr.id]="chart.id"></canvas>
-    
+<div class="row">
+  <div class="jumbotron col-lg-6  col-md-12">
+    <h2>Graphique de l'humidité</h2>
+    <canvas #lightChart>{{ chartHumidity }}</canvas>
+  </div>
+  <div class="jumbotron col-lg-6  col-md-12">
+    <h2>Graphique de l'humidité du sol</h2>
+    <canvas #watterChart>{{ chartWatter }}</canvas>
   </div>
 </div>
