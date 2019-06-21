@@ -10,6 +10,7 @@ var lightSensor = require('./arduino_components/lightSensor');
 var moistureSensor = require('./arduino_components/moistureSensor');
 var fan = require('./arduino_components/fan');
 var pump = require('./arduino_components/pump');
+var tempSensor = require('./arduino_components/tempSensor');
 
 board.on("ready", function() {
     console.log("Board ready")
@@ -41,6 +42,12 @@ function initComponents(){
         io.sockets.emit(server_conf.SOCKET_IO_EVENT_MOISTURE_SENSOR, value, new Date().toLocaleTimeString());
     }
 
+    tempSensor.init();
+    tempSensor.onData = function(value){
+        //console.log('moisture : ' + value);
+        io.sockets.emit(server_conf.SOCKET_IO_EVENT_TEMPERATURE_SENSOR, value, new Date().toLocaleTimeString());
+    }
+
     fan.init();
     fan.onChange = function(value){
         io.sockets.emit(server_conf.SOCKET_IO_EVENT_FAN, value);
@@ -50,6 +57,8 @@ function initComponents(){
     pump.onChange = function(value){
         io.sockets.emit(server_conf.SOCKET_IO_EVENT_PUMP, value);
     }
+
+
     console.log("Initialization complete");
 }
 
@@ -61,4 +70,5 @@ arduino.waterSensor = waterSensor;
 arduino.lightSensor = lightSensor;
 arduino.fan = fan;
 arduino.pump = pump;
+arduino.tempSensor = tempSensor;
 module.exports = arduino;

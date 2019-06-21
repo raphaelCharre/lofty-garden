@@ -33,7 +33,7 @@
                                     data: [],
                                     labels: [],
                                     graph: null,
-                                    scale: -100,
+                                    scale: -300,
                                     color: 'rgba(255, 167, 0, 1)',
                                     bgColor: 'rgba(255, 167, 0, .1)'
                                 },{
@@ -43,7 +43,7 @@
                                     data: [],
                                     labels: [],
                                     graph: null,
-                                    scale: -100,
+                                    scale: -500,
                                     color: 'rgba(0, 158, 255, 1)',
                                     bgColor: 'rgba(0, 158, 255, .1)'
                                 },{
@@ -53,7 +53,7 @@
                                     data: [],
                                     labels: [],
                                     graph: null,
-                                    scale: -100,
+                                    scale: -500,
                                     color: 'rgba(64, 164, 151, 1)',
                                     bgColor: 'rgba(64, 164, 151, .1)'
                                 },{
@@ -63,10 +63,10 @@
                                     data: [],
                                     labels: [],
                                     graph: null,
-                                    scale: -100,
+                                    scale: -1000,
                                     color: 'rgba(222, 22, 14, 1)',
                                     bgColor: 'rgba(222, 22, 14, .1)'
-                                },{
+                                },/*{
                                     id: 'humidity_sensor',
                                     name: 'Humidity Sensor',
                                     event: 'HUMIDITY',
@@ -76,7 +76,7 @@
                                     scale: -100,
                                     color: 'rgba(125, 206, 232, 1)',
                                     bgColor: 'rgba(125, 206, 232, .1)'
-                                }
+                                }*/
                             ],
 
                             socket: null,
@@ -137,7 +137,7 @@
                             }
                         },
                         created(){
-                            this.socket = io.connect('http://10.44.1.64:4201');
+                            this.socket = io.connect('http://localhost:4201');
                             this.socket.on('FAN', value=>{
                                 this.components.fan.value = value;
                             });

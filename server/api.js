@@ -3,22 +3,23 @@ const path = require('path');
 const app = express();
 const server_conf = require('./conf/server.conf');
 const arduino = require('./arduino');
-const mongoose = require('mongoose');
+/*
+const mongo = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const corsOptions = {
-  origin: 'http://localhost:4200',
+  origin: 'http://localhost:8080',
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-app.use(express.static(__dirname + '/node_modules'));
 app.use(bodyParser());
 app.use(bodyParser.json({limits:'Smb'}));
 app.use(bodyParser.urlencoded({extended:true}));
 
 const db = mongo.connect('mongodb://bigcgtbul5u9sr9-mongodb.services.clever-cloud.com:27017', (err,response) => {
   err ? console.log(err) : console.log('Connected to ', db, ' + ', response);
-});
+});*/
+app.use(express.static(__dirname + '/node_modules'));
 
 app.get("/", function(req, res) {
   // res.setHeader("Content-Type", "text/plain");
