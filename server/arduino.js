@@ -26,7 +26,7 @@ function initComponents(){
     console.log("Initialize components...");
     waterSensor.init();
     waterSensor.onData = function(value){
-        //console.log('water : ' + value);
+        console.log('water : ' + value);
         io.sockets.emit(server_conf.SOCKET_IO_EVENT_WATER_SENSOR, value, new Date().toLocaleTimeString());
     }
 
@@ -38,13 +38,13 @@ function initComponents(){
 
     moistureSensor.init();
     moistureSensor.onData = function(value){
-        //console.log('moisture : ' + value);
+        console.log('moisture : ' + value);
         io.sockets.emit(server_conf.SOCKET_IO_EVENT_MOISTURE_SENSOR, value, new Date().toLocaleTimeString());
     }
 
     tempSensor.init();
     tempSensor.onData = function(value){
-        //console.log('moisture : ' + value);
+        console.log('temp : ' + value);
         io.sockets.emit(server_conf.SOCKET_IO_EVENT_TEMPERATURE_SENSOR, value, new Date().toLocaleTimeString());
     }
 
