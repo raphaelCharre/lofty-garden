@@ -3,7 +3,13 @@ const path = require('path');
 const app = express();
 const server_conf = require('./conf/server.conf');
 const arduino = require('./arduino');
-
+const mongoose = require('mongoose');
+const cors = require('cors');
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.static(__dirname + '/node_modules'));
 
 app.get("/", function(req, res) {
