@@ -17,9 +17,17 @@ app.get("/test", function(req, res) {
   res.sendFile(path.join(__dirname + '/views/index.html'));
 });
 
+app.get("/fan/now", function(req, res) {
+  res.status(200).json({ value: arduino.fan.getValue()});
+});
+
 app.get("/fan/:value", function(req, res) {
   arduino.fan.setValue(req.params.value > 0 ? 1:0);
   res.sendStatus(200);
+});
+
+app.get("/pump/now", function(req, res) {
+  res.status(200).json({ value: arduino.fan.getValue()});
 });
 
 app.get("/pump/:value", function(req, res) {
@@ -27,25 +35,23 @@ app.get("/pump/:value", function(req, res) {
   res.sendStatus(200);
 });
 
-app.get("/temp", function(req, res) {
+app.get("/temp/now", function(req, res) {
   // res.setHeader("Content-Type", "text/plain");
   // res.send("home");
   console.log("Navigating to /temp");
   res.json({ key: 2 });
 });
 
-app.get("/moist", function(req, res) {
-  // res.setHeader("Content-Type", "text/plain");
-  // res.send("home");
-  console.log("Navigating to /moist");
-  res.json({ key: 3 });
+app.get("/water/now", function(req, res) {
+  res.status(200).json({ value: arduino.waterSensor.getValue()});
 });
 
-app.get("/light", function(req, res) {
-  // res.setHeader("Content-Type", "text/plain");
-  // res.send("home");
-  console.log("Navigating to /light");
-  res.json({ key: 4 });
+app.get("/moist/now", function(req, res) {
+  res.status(200).json({ value: arduino.moistureSensor.getValue()});
+});
+
+app.get("/light/now", function(req, res) {
+  res.status(200).json({ value: arduino.lightSensor.getValue()});
 });
 
 app.use(function(req, res, next) {

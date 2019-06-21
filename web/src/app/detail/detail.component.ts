@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Chart } from "chart.js";
+import { io } from "socket.io-client";
 
 @Component({
   selector: "app-detail",
@@ -10,13 +11,74 @@ import { Chart } from "chart.js";
 export class DetailComponent implements OnInit {
   public objSerre: any;
   public plante;
-  public chartTemp: any;
-  public chartWatter: any;
-  public chartLumos: any;
+  private components = {
+    fan : {
+        value: 0
+    },
+    pump : {
+        value: 0
+    }
+  };
 
-  @ViewChild("barChart") private chartRef1;
-  @ViewChild("lineChart") private chartRef2;
-  @ViewChild("zoulouChart") private chartRef3;
+  private charts = [
+    {
+        id: 'light_sensor',
+        name: 'Light sensor',
+        event: 'LIGHT',
+        data: [],
+        labels: [],
+        graph: null,
+        scale: -100,
+        color: 'rgba(255, 167, 0, 1)',
+        bgColor: 'rgba(255, 167, 0, .1)'
+    },{
+        id: 'water_sensor',
+        name: 'Water Sensor',
+        event: 'WATER',
+        data: [],
+        labels: [],
+        graph: null,
+        scale: -100,
+        color: 'rgba(0, 158, 255, 1)',
+        bgColor: 'rgba(0, 158, 255, .1)'
+    },{
+        id: 'moisture_sensor',
+        name: 'Moisture Sensor',
+        event: 'MOISTURE',
+        data: [],
+        labels: [],
+        graph: null,
+        scale: -100,
+        color: 'rgba(64, 164, 151, 1)',
+        bgColor: 'rgba(64, 164, 151, .1)'
+    },{
+        id: 'temp_sensor',
+        name: 'Temperature Sensor',
+        event: 'TEMP',
+        data: [],
+        labels: [],
+        graph: null,
+        scale: -100,
+        color: 'rgba(222, 22, 14, 1)',
+        bgColor: 'rgba(222, 22, 14, .1)'
+    },{
+        id: 'humidity_sensor',
+        name: 'Humidity Sensor',
+        event: 'HUMIDITY',
+        data: [],
+        labels: [],
+        graph: null,
+        scale: -100,
+        color: 'rgba(125, 206, 232, 1)',
+        bgColor: 'rgba(125, 206, 232, .1)'
+    }
+];
+
+private socket= null;
+
+  @ViewChild("barChart", {static: false}) private chartRef1;
+  @ViewChild("lineChart", {static: false}) private chartRef2;
+  @ViewChild("zoulouChart", {static: false}) private chartRef3;
 
   constructor(private route: ActivatedRoute) {
     this.objSerre = [
@@ -50,112 +112,76 @@ export class DetailComponent implements OnInit {
     }
   };
 
-  graphTemp() {
-    return new Chart(this.chartRef1.nativeElement, {
-      type: "bar",
-      data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
+  initSocket = ()=>{
+    this.socket = io('http://localhost:4201');
+    this.socket.on('FAN', value=>{
+      this.components.fan.value = value;
     });
-  }
+    this.socket.on('PUMP', value=>{
+        this.components.pump.value = value;
+    });
+  };
 
-  graphWatter() {
-    return new Chart(this.chartRef2.nativeElement, {
-      type: "line",
-      data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-            borderColor: ["rgba(255, 99, 132, 1)"],
-            borderWidth: 2
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
+  initCharts = ()=>{
+    for(const chart of this.charts){
+      var chart_dom_element = <HTMLCanvasElement> document.getElementById(chart.id);
+      var ctx = chart_dom_element.getContext('2d');
+      chart.graph = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: [],
+              datasets: []
+          },
+          options : {
+              animation : {
+                  duration: 0
+              },
+              scales: {
+                  xAxes: [{
+                      gridLines: {
+                          //color: '#555'
+                      },
+                      ticks :{
+                          //fontColor: '#aaa',
+                          fontSize: 14
+                      }
+                  }],
+                  yAxes: [{
+                      gridLines: {
+                          //color: '#555'
+                      },
+                      ticks: {
+                          //fontColor: '#aaa',
+                          fontSize: 14
+                      }
+                  }]
               }
-            }
-          ]
-        }
-      }
-    });
-  }
 
-  graphLumos() {
-    return new Chart(this.chartRef3.nativeElement, {
-      type: "line",
-      data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: ["rgba(54, 162, 235, 0.2)"],
-            borderColor: ["rgba(54, 162, 235, 1)"],
-            borderWidth: 1
           }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    });
+      });
+
+      this.socket.on(chart.event, function(value, label){
+          chart.data.push(value);
+          chart.labels.push(label);
+
+          chart.graph.data.labels = chart.labels.slice(chart.scale);
+          chart.graph.data.datasets = [{
+              data : chart.data.slice(chart.scale),
+              borderColor: chart.color,
+              backgroundColor: chart.bgColor,
+              fill: true,
+              label: chart.name,
+              
+          }];
+          chart.graph.update();
+      })
+    }
   }
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("idSerre");
     this.plante = this.search(id, this.objSerre);
-    this.chartTemp = this.graphTemp();
-    this.chartWatter = this.graphWatter();
-    this.chartLumos = this.graphLumos();
+    this.initSocket();
+    this.initCharts();
   }
 }

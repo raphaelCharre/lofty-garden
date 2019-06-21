@@ -37,7 +37,7 @@ function initComponents(){
 
     moistureSensor.init();
     moistureSensor.onData = function(value){
-        //console.log('light : ' + value);
+        //console.log('moisture : ' + value);
         io.sockets.emit(server_conf.SOCKET_IO_EVENT_MOISTURE_SENSOR, value, new Date().toLocaleTimeString());
     }
 
